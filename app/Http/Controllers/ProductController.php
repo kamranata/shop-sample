@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Order;
+use App\Http\Requests\CreateOrderRequest;
 use App\Mail\OrderCreated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -27,14 +28,8 @@ class ProductController extends Controller
         return view('checkout')->with(compact('product_id'));
     }
 
-    public function process(Request $request)
+    public function process(CreateOrderRequest $request)
     {
-    	$validated = $request->validate([
-	        'name'     => 'required|string|max:255',
-	        'address'  => 'required|string|max:255',
-	        'shipping' => 'required|in:0,10',
-    	]);
-
     	$product = Product::findOrFail($request->product_id);
 
     	$order = Order::create([
